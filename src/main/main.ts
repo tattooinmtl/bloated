@@ -79,7 +79,7 @@ async function bootSequence() {
 
   const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-  splashLog('[boot] Bloated v1.0.0');
+  splashLog('[boot] Bloated v1.1.0');
   splashProgress(5);
   await wait(300);
 
