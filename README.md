@@ -33,6 +33,17 @@
 - Auto-start programs, password policy, unquoted service paths
 - BitLocker encryption, Secure Boot
 
+### � Exploit Scanner
+Tier-based JavaScript vulnerability scanner with user-controlled remediation:
+- **Auto-discovers Node.js projects** across your drives (configurable scan roots)
+- **4 priority tiers**: AI/ML → npm Core → Frameworks → Git & Tooling
+- **npm audit + OSV.dev API** (dual-source with automatic fallback)
+- **12 static analysis patterns**: eval, prototype pollution, innerHTML, hardcoded secrets, insecure HTTP, and more
+- **Per-vulnerability actions**: Update (safe), Patch (moderate), Erase (destructive) — with risk labels
+- **Double confirmation flow**: inline panel → modal popup before any action executes
+- Tier-by-tier scanning with pause screens — scan only what you need
+- All commands run with `--ignore-scripts` and `shell: false` to prevent supply chain attacks
+
 ### 🔌 Port Scanner
 - TCP connect scan using Node.js `net` module
 - **60+ known service names** with banner grabbing
@@ -60,7 +71,7 @@ Health checks for 12 common dev tools:
 
 | Layer       | Technology                          |
 |-------------|-------------------------------------|
-| Framework   | Electron 36                         |
+| Framework   | Electron 41                         |
 | UI          | React 19 + React Router             |
 | Language    | TypeScript 6                        |
 | Bundler     | Vite 8                              |
@@ -121,6 +132,10 @@ Outputs an NSIS installer and portable `.exe` in the `release/` folder.
 - `contextIsolation: true` — renderer cannot access Node.js APIs directly
 - `nodeIntegration: false` — all IPC goes through a secure preload bridge
 - `sandbox: false` for preload (required for IPC)
+- All shell commands use `execFile` with argument arrays — no shell string interpolation
+- Strict input validation on all user-supplied values (IPs, package names, paths)
+- `--ignore-scripts` on npm operations to block supply chain postinstall attacks
+- Hardcoded API hostnames to prevent redirect tampering
 - No remote code execution, no file uploads, no telemetry
 
 ---

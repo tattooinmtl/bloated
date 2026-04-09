@@ -1,8 +1,15 @@
 import { ipcMain, BrowserWindow } from 'electron';
 import * as net from 'net';
 import * as os from 'os';
-import { execSync } from 'child_process';
+import { execSync, execFile } from 'child_process';
 import type { NetworkHost, NetworkScanProgress, NetworkInfo } from '../../shared/types';
+
+/** Strict IPv4 validation to prevent command injection */
+const STRICT_IPV4 = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+function isValidIPv4(ip: string): boolean {
+  if (!STRICT_IPV4.test(ip)) return false;
+  return ip.split('.').every((o) => { const n = parseInt(o, 10); return n >= 0 && n <= 255; });
+}
 
 let abortScan = false;
 
@@ -82,14 +89,19 @@ function pingHost(ip: string): Promise<number> {
 
 function pingHostICMP(ip: string): Promise<number> {
   return new Promise((resolve) => {
+    // Validate IP format before passing to any command to prevent injection
+    if (!isValidIPv4(ip)) { resolve(-1); return; }
     try {
-      const out = execSync(`ping -n 1 -w 500 ${ip}`, {
+      // Use execFile with argument array — no shell, no injection
+      execFile('ping', ['-n', '1', '-w', '500', ip], {
         timeout: 2000, encoding: 'utf-8', windowsHide: true,
+      }, (err, stdout) => {
+        if (err || !stdout) { resolve(-1); return; }
+        const m = stdout.match(/time[=<](\d+)/i);
+        if (m) resolve(parseInt(m[1], 10));
+        else if (stdout.includes('TTL=') || stdout.includes('ttl=')) resolve(1);
+        else resolve(-1);
       });
-      const m = out.match(/time[=<](\d+)/i);
-      if (m) resolve(parseInt(m[1], 10));
-      else if (out.includes('TTL=') || out.includes('ttl=')) resolve(1);
-      else resolve(-1);
     } catch { resolve(-1); }
   });
 }
@@ -111,10 +123,17 @@ function getArpTable(): Map<string, string> {
 }
 
 function resolveHostname(ip: string): string {
+  // Validate IP format before passing to any command to prevent injection
+  if (!isValidIPv4(ip)) return '';
   try {
-    const out = execSync(`powershell -NoProfile -Command "([System.Net.Dns]::GetHostEntry('${ip}')).HostName"`, {
+    // Use execFile with argument array — no shell string interpolation
+    const { execFileSync } = require('child_process');
+    const out = (execFileSync('powershell', [
+      '-NoProfile', '-Command',
+      `([System.Net.Dns]::GetHostEntry('${ip}')).HostName`,
+    ], {
       timeout: 3000, encoding: 'utf-8', windowsHide: true,
-    }).trim();
+    }) as string).trim();
     if (out && out !== ip) return out;
   } catch { /* ignore */ }
   return '';

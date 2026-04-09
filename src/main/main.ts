@@ -8,6 +8,7 @@ import { registerSecurityCheckerIPC } from './ipc/security-checker';
 import { registerEnvCheckerIPC } from './ipc/env-checker';
 import { registerPortScannerIPC } from './ipc/port-scanner';
 import { registerNetworkScannerIPC } from './ipc/network-scanner';
+import { registerExploitScannerIPC } from './ipc/exploit-scanner';
 import type { AppSettings } from '../shared/types';
 
 // ── Settings (simple JSON store) ──
@@ -140,6 +141,11 @@ async function bootSequence() {
   splashLog('[ipc] Registering network scanner...');
   registerNetworkScannerIPC();
   splashProgress(55);
+  await wait(250);
+
+  splashLog('[ipc] Registering exploit scanner...');
+  registerExploitScannerIPC();
+  splashProgress(57);
   await wait(250);
 
   splashLog('[ipc] Registering settings handlers...');

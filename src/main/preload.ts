@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import type { BloatedAPI, ScanProgress, VirusScanProgress, SecurityScanProgress, PortScanProgress, NetworkScanProgress } from '../shared/types';
+import type { BloatedAPI, ScanProgress, VirusScanProgress, SecurityScanProgress, PortScanProgress, NetworkScanProgress, ExploitScanProgress } from '../shared/types';
 
 const api: BloatedAPI = {
   // ── Cache ──
@@ -48,6 +48,17 @@ const api: BloatedAPI = {
     const handler = (_: any, progress: NetworkScanProgress) => cb(progress);
     ipcRenderer.on('network:scan-progress', handler);
     return () => ipcRenderer.removeListener('network:scan-progress', handler);
+  },
+
+  // ── Exploit Scanner ──
+  getExploitTiers: () => ipcRenderer.invoke('exploit:tiers'),
+  scanExploitTier: (tierId, roots) => ipcRenderer.invoke('exploit:scan-tier', tierId, roots),
+  executeExploitAction: (projectPath, exploitId, action) => ipcRenderer.invoke('exploit:execute-action', projectPath, exploitId, action),
+  stopExploitScan: () => ipcRenderer.send('exploit:stop'),
+  onExploitScanProgress: (cb) => {
+    const handler = (_: any, progress: ExploitScanProgress) => cb(progress);
+    ipcRenderer.on('exploit:scan-progress', handler);
+    return () => ipcRenderer.removeListener('exploit:scan-progress', handler);
   },
 
   // ── Settings ──

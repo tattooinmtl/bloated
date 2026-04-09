@@ -1,6 +1,6 @@
 {
   "name": "bloated",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Cache cleaner and virus scanner for Windows",
   "main": "dist/main/main/main.js",
   "scripts": {

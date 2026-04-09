@@ -184,6 +184,82 @@ export interface NetworkInfo {
   interfaceName: string;
 }
 
+// ── Exploit Scanner ──
+
+export type ExploitSeverity = 'critical' | 'high' | 'moderate' | 'low';
+export type ExploitSource = 'npm-audit' | 'osv-api' | 'static-analysis';
+export type ExploitActionType = 'update' | 'patch' | 'erase';
+export type ExploitActionRisk = 'safe' | 'moderate' | 'destructive';
+
+export interface ScanTier {
+  id: string;
+  label: string;
+  priority: number;
+  description: string;
+  icon: string;           // emoji
+  globs: string[];        // fast-glob patterns for package.json discovery
+  keywords: string[];     // dependency names that classify a project into this tier
+}
+
+export interface ExploitAction {
+  type: ExploitActionType;
+  label: string;
+  description: string;
+  command: string;        // the npm command that will be executed
+  risk: ExploitActionRisk;
+}
+
+export interface ExploitItem {
+  id: string;
+  packageName: string;
+  installedVersion: string;
+  patchedVersion?: string;
+  severity: ExploitSeverity;
+  cveId?: string;
+  advisoryUrl?: string;
+  source: ExploitSource;
+  description: string;
+  actions: ExploitAction[];
+}
+
+export interface CodeIssue {
+  id: string;
+  filePath: string;
+  line: number;
+  column: number;
+  patternId: string;      // e.g. 'eval-usage', 'prototype-pollution'
+  severity: ExploitSeverity;
+  description: string;
+  recommendation: string;
+  snippet: string;        // the offending line of code
+}
+
+export interface ProjectExploitResult {
+  projectPath: string;
+  name: string;
+  version: string;
+  tierId: string;
+  exploits: ExploitItem[];
+  codeIssues: CodeIssue[];
+}
+
+export interface ExploitScanProgress {
+  phase: 'discovering' | 'auditing' | 'analyzing' | 'tier-complete' | 'done';
+  current: string;
+  scanned: number;
+  total: number;
+  totalVulns: number;
+  tierLabel: string;
+}
+
+export interface ExploitActionResult {
+  projectPath: string;
+  actionType: ExploitActionType;
+  success: boolean;
+  detail: string;
+  errors: string[];
+}
+
 // ── IPC API shape exposed via preload ──
 
 export interface BloatedAPI {
@@ -214,6 +290,13 @@ export interface BloatedAPI {
   startNetworkScan: (subnet: string) => Promise<NetworkHost[]>;
   stopNetworkScan: () => void;
   onNetworkScanProgress: (cb: (progress: NetworkScanProgress) => void) => () => void;
+
+  // Exploit Scanner
+  getExploitTiers: () => Promise<ScanTier[]>;
+  scanExploitTier: (tierId: string, roots?: string[]) => Promise<ProjectExploitResult[]>;
+  executeExploitAction: (projectPath: string, exploitId: string, action: ExploitAction) => Promise<ExploitActionResult>;
+  stopExploitScan: () => void;
+  onExploitScanProgress: (cb: (progress: ExploitScanProgress) => void) => () => void;
 
   // Settings
   getSettings: () => Promise<AppSettings>;

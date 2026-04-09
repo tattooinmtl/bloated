@@ -1,12 +1,13 @@
 import React from 'react';
 import { HashRouter, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, Trash2, ShieldCheck, ShieldAlert, Terminal, Radar, Settings } from 'lucide-react';
+import { LayoutDashboard, Trash2, ShieldCheck, ShieldAlert, Terminal, Radar, Settings, Bug } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
 import CacheCleaner from './pages/CacheCleaner';
 import VirusScanner from './pages/VirusScanner';
 import SecurityCheck from './pages/SecurityCheck';
 import DevEnvironment from './pages/DevEnvironment';
 import PortScanner from './pages/PortScanner';
+import ExploitScanner from './pages/ExploitScanner';
 import SettingsPage from './pages/Settings';
 import logoBloated from './assets/logoBloated.png';
 
@@ -15,6 +16,7 @@ const NAV = [
   { to: '/cache', icon: Trash2, label: 'Cache Cleaner' },
   { to: '/scan', icon: ShieldCheck, label: 'Virus Scanner' },
   { to: '/security', icon: ShieldAlert, label: 'Security' },
+  { to: '/exploits', icon: Bug, label: 'Exploit Scanner' },
   { to: '/ports', icon: Radar, label: 'Port Scanner' },
   { to: '/devenv', icon: Terminal, label: 'Dev Env' },
   { to: '/settings', icon: Settings, label: 'Settings' },
@@ -48,6 +50,7 @@ export default function App() {
           <Route path="/cache" element={<CacheCleaner />} />
           <Route path="/scan" element={<VirusScanner />} />
           <Route path="/security" element={<SecurityCheck />} />
+          <Route path="/exploits" element={<ExploitScanner />} />
           <Route path="/ports" element={<PortScanner />} />
           <Route path="/devenv" element={<DevEnvironment />} />
           <Route path="/settings" element={<SettingsPage />} />
