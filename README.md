@@ -9,7 +9,20 @@
 </p>
 
 ---
-## NOTICE : DON NOT JUST TRUST THE APP AND ERASE THE FILES IT SHOWS YOU DO YOUR OWN HOMEWORK THIS IS TO FIND HIDDEN FILES KEPT AWAY FROM WINDOWS USER BY BIG TECH! YOU NEED TO KNOW WHAT YOUR LOOKING FOR. MEANING ONLY PROS SHOULD USE THIS APP! 
+✅ IMPORTANT NOTICE
+⚠️ READ THIS CAREFULLY BEFORE USING THE APP
+This tool is designed only to help advanced users (pros and experienced Windows power users) discover hidden files and folders that Microsoft (“Big Tech”) normally keeps invisible to regular users.
+❗ CRITICAL WARNINGS:
+
+Do NOT blindly trust the app and delete everything it shows you.
+Always do your own homework — research every file or folder before taking any action.
+You must know exactly what you are looking for. Deleting the wrong system file can break Windows, cause data loss, or make your PC unstable.
+This app is NOT for beginners or casual users.
+
+Who should use this app?
+Only professionals or highly experienced users who understand Windows system files and accept full responsibility for their actions.
+If you are unsure about any file, stop immediately and seek help from a qualified technician.
+You have been warned. Use at your own risk.
 
 ## Features
 
