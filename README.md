@@ -3,6 +3,313 @@
 </p>
 
 <h1 align="center">Bloated</h1>
+# Bloated v1.3
+
+## Windows Cleanup, Security Audit, Virus Scanning & Developer Environment Repair
+
+Bloated is an Electron-based Windows utility designed to help users clean unnecessary files, audit system security, scan for threats, identify development environment issues, and apply safe automated remediation where possible.
+
+Version 1.3 introduces a major security and remediation update with a complete quarantine system, improved dependency auditing, automated security fixes, safer environment repair tools, and enhanced scan reporting.
+
+---
+
+# New in Version 1.3
+
+## Quarantine System
+
+Bloated now includes a dedicated quarantine system for suspicious files.
+
+### Features
+
+* Move suspicious files into quarantine instead of deleting them.
+* Restore quarantined files to their original location.
+* Permanently delete quarantined files when desired.
+* SHA256 verification during cross-drive moves.
+* Automatic randomization of quarantined file names.
+* Executable extensions removed inside quarantine.
+* Quarantine metadata tracking.
+* Protection against overwriting existing files during restore.
+
+### Storage Location
+
+```text
+C:\ProgramData\Bloated\Quarantine\
+```
+
+Structure:
+
+```text
+Quarantine
+├── files
+├── reports
+└── quarantine-index.json
+```
+
+### Stored Metadata
+
+* Original path
+* Detection source
+* Detection reason
+* SHA256 hash
+* File size
+* Quarantine date
+* Restore status
+
+---
+
+## Virus Scanner Improvements
+
+### New Actions
+
+Virus scan results now support:
+
+* Quarantine file
+* Open file location
+* Open scan report
+* View detection source
+* View threat reason
+
+### Safer Workflow
+
+Old:
+
+```text
+Detect → Delete
+```
+
+New:
+
+```text
+Detect → Quarantine → Review → Restore or Delete
+```
+
+---
+
+## Dependency & Code Audit
+
+Formerly known as:
+
+```text
+Exploit Scanner
+```
+
+Renamed to better reflect its purpose.
+
+### Improvements
+
+* Full project path display
+* Full file path display
+* Folder location display
+* Line and column information
+* Open file button
+* Open folder button
+* Vulnerability remediation guidance
+* Package update recommendations
+
+### NPM Audit Integration
+
+Bloated can now execute:
+
+```bash
+npm audit fix
+```
+
+and
+
+```bash
+npm audit fix --force
+```
+
+using allow-listed commands executed through secure process spawning.
+
+### Code Findings
+
+Bloated detects patterns such as:
+
+* eval()
+* unsafe innerHTML
+* command execution risks
+* hardcoded secrets
+
+The application explains why the finding matters and where it exists.
+
+For safety reasons, Bloated does not automatically rewrite source code.
+
+---
+
+## System Security Audit
+
+Expanded security auditing capabilities.
+
+### Security Checks
+
+* Microsoft Defender status
+* Defender real-time protection
+* Firewall status
+* UAC status
+* BitLocker status
+* Secure Boot status
+* Windows Update age
+* Open listening ports
+* Startup applications
+* Remote Desktop status
+* SMBv1 status
+* Guest account status
+
+### Automated Remediation
+
+Bloated can now:
+
+* Enable Windows Firewall
+* Enable Defender real-time protection
+* Update Defender signatures
+* Enable UAC
+* Disable Guest account
+* Disable Remote Desktop
+* Disable SMBv1
+* Disable AutoRun
+* Open Windows Update settings
+
+---
+
+## Development Environment Repair
+
+The Dev Environment module now includes automated diagnostics and safe repair actions.
+
+### PATH Analysis
+
+Bloated can:
+
+* Detect duplicate PATH entries
+* Detect stale PATH entries
+* Remove invalid user PATH entries
+
+### Java Detection
+
+* Verifies Java installation
+* Validates javac.exe
+* Configures JAVA_HOME only when verified
+
+### NPM Configuration Repair
+
+* Detects problematic npm prefix overrides
+* Creates backup of configuration
+* Removes unsafe user-level prefix entries
+
+### Installation Guidance
+
+Bloated explains:
+
+* Expected installation locations
+* Recommended environment setup
+* Whether the current location is valid
+* Whether a custom installation path is acceptable
+
+The application avoids making assumptions about non-standard but valid installations.
+
+---
+
+## Scan Reports
+
+Bloated now supports structured scan reports.
+
+### Report Storage
+
+```text
+C:\ProgramData\Bloated\Reports\
+```
+
+### Stored Information
+
+* Scan type
+* Start time
+* End time
+* Files scanned
+* Threats found
+* Files quarantined
+* Security findings
+* Errors
+* Application version
+* Windows version
+
+Future versions will include:
+
+* PDF reports
+* HTML reports
+* Historical report browser
+
+---
+
+## Security Model
+
+Bloated follows a security-first architecture.
+
+### Protections
+
+* Context Isolation enabled
+* Node Integration disabled
+* Secure preload bridge
+* IPC validation
+* execFile usage instead of shell execution
+* No telemetry
+* No file uploads
+* No cloud scanning requirements
+
+---
+
+# Upcoming Roadmap
+
+## Version 1.4
+
+### Enhanced Reporting
+
+* PDF export
+* HTML export
+* Historical report viewer
+* Report search
+
+### Security Audit Expansion
+
+* Pending reboot detection
+* Defender engine version checks
+* Defender tamper protection checks
+* Firewall profile auditing
+* PowerShell execution policy auditing
+
+---
+
+## Version 1.5
+
+### Vulnerability Intelligence
+
+* CVE matching
+* Missing update analysis
+* Installed software vulnerability review
+* Security baseline comparison
+
+---
+
+# Important Notes
+
+Bloated is designed to provide safe automated remediation where possible.
+
+Certain findings intentionally require user review:
+
+* Source code vulnerabilities
+* Application architecture issues
+* Custom project security decisions
+
+Bloated will explain the issue, provide the exact file location, and suggest remediation steps instead of making potentially destructive code modifications automatically.
+
+---
+
+# Version
+
+Current Version:
+
+```text
+1.3.0
+```
 
 <p align="center">
   A Windows system utility toolkit built with Electron, React, and TypeScript.
